@@ -1,1 +1,66 @@
+#include <stdio.h>
+#define LEFT -1
+#define RIGHT 1
+struct Element {
+    int value;
+    int direction;
+};
+int getMobile(struct Element a[], int n) {
+    int mobile = 0;
+    int mobileIndex = -1;
+    for(int i = 0; i < n; i++) {
+        if(a[i].direction == LEFT && i != 0 &&
+           a[i].value > a[i - 1].value &&
+           a[i].value > mobile) {
+            mobile = a[i].value;
+            mobileIndex = i;
+        }
+        if(a[i].direction == RIGHT && i != n - 1 &&
+           a[i].value > a[i + 1].value &&
+           a[i].value > mobile) {
 
+            mobile = a[i].value;
+            mobileIndex = i;
+        }
+    }
+    return mobileIndex;
+}
+void printPermutation(struct Element a[], int n) {
+    for(int i = 0; i < n; i++) {
+        printf("%d ", a[i].value);
+    }
+    printf("\n");
+}
+int main() {
+    int n;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    struct Element a[n];
+    for(int i = 0; i < n; i++) {
+        a[i].value = i + 1;
+        a[i].direction = LEFT;
+    }
+    printf("\nPermutations:\n");
+    printPermutation(a, n);
+    while(1) {
+        int mobileIndex = getMobile(a, n);
+        if(mobileIndex == -1)
+            break;
+        int swapIndex;
+        if(a[mobileIndex].direction == LEFT)
+            swapIndex = mobileIndex - 1;
+        else
+            swapIndex = mobileIndex + 1;
+        struct Element temp = a[mobileIndex];
+        a[mobileIndex] = a[swapIndex];
+        a[swapIndex] = temp;
+        mobileIndex = swapIndex;
+        for(int i = 0; i < n; i++) {
+            if(a[i].value > a[mobileIndex].value) {
+                a[i].direction *= -1;
+            }
+        }
+        printPermutation(a, n);
+    }
+    return 0;
+}
