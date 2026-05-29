@@ -1,1 +1,43 @@
+#include <stdio.h>
 
+int gcd(int a, int b) {
+    while(b != 0) {
+        int temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+}
+
+int main() {
+    int n, i;
+
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+
+    int arr[n];
+
+    printf("Enter array elements:\n");
+    for(i = 0; i < n; i++) {
+        scanf("%d", &arr[i]);
+    }
+
+    int smallest = arr[0];
+    int largest = arr[0];
+
+    for(i = 1; i < n; i++) {
+        if(arr[i] < smallest)
+            smallest = arr[i];
+
+        if(arr[i] > largest)
+            largest = arr[i];
+    }
+
+    int result = gcd(smallest, largest);
+
+    printf("Smallest number = %d\n", smallest);
+    printf("Largest number = %d\n", largest);
+    printf("GCD = %d\n", result);
+
+    return 0;
+}
